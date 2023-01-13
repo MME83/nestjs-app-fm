@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { configSchemaValidation } from './config.schema';
 import { BanksModule } from './banks/banks.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { CategoryModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     }),
     BanksModule,
     TransactionsModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
