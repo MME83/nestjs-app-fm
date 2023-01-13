@@ -1,12 +1,13 @@
+import { Category } from '../categories/category.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  //ManyToMany,
+  ManyToMany,
   CreateDateColumn,
   UpdateDateColumn,
-  //JoinColumn,
+  JoinColumn,
   //BeforeInsert,
   //BeforeUpdate,
 } from 'typeorm';
@@ -44,8 +45,16 @@ export class Transaction {
    * Relations with bank
    */
   @ManyToOne(() => Bank, (bank) => bank.transactions, { cascade: true })
-  //@JoinColumn({ name: 'bankId' })
   bank: Bank;
+
+  /**
+   * Relations with category
+   */
+  @ManyToMany(() => Category, (category) => category.transactions, {
+    cascade: true,
+  })
+  @JoinColumn()
+  categories: Category[];
 
   /*
   @BeforeInsert()
