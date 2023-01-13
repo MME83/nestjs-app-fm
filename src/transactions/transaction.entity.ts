@@ -7,7 +7,7 @@ import {
   ManyToMany,
   CreateDateColumn,
   UpdateDateColumn,
-  JoinColumn,
+  JoinTable,
   //BeforeInsert,
   //BeforeUpdate,
 } from 'typeorm';
@@ -53,7 +53,7 @@ export class Transaction {
   @ManyToMany(() => Category, (category) => category.transactions, {
     cascade: true,
   })
-  @JoinColumn()
+  @JoinTable()
   categories: Category[];
 
   /*

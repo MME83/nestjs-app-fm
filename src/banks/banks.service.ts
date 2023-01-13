@@ -7,11 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateBankDto, GetBankDto, UpdateBankDto } from './bank.dto';
 import { Bank } from './bank.entity';
-import {
-  //Transaction,
-  TransactionType,
-} from '../transactions/transaction.entity';
-//import { TransactionsService } from '../transactions/transactions.service';
+import { TransactionType } from '../transactions/transaction.entity';
 
 @Injectable()
 export class BanksService {
@@ -82,7 +78,6 @@ export class BanksService {
       where: { id },
       relations: { transactions: true },
       take: 1,
-      //select: { transactions[0]: true }
     });
 
     if (!bank) {
@@ -95,7 +90,7 @@ export class BanksService {
       );
     }
 
-    await this.banksRepository.remove(bank);
+    await this.banksRepository.remove(bank[0]);
   }
 
   async calculateBankBalance(

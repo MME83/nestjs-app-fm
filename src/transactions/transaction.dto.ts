@@ -1,17 +1,14 @@
 import {
   IsNotEmpty,
-  IsString,
+  //IsString,
   IsNumber,
   IsUUID,
   IsEnum,
+  IsArray,
 } from 'class-validator';
 import { TransactionType } from './transaction.entity';
 
 export class CreateTransactionDto {
-  @IsString()
-  @IsNotEmpty()
-  public transactionId: string;
-
   @IsNumber()
   @IsNotEmpty()
   public amount!: number;
@@ -22,7 +19,11 @@ export class CreateTransactionDto {
 
   @IsUUID()
   @IsNotEmpty()
-  bankId: string;
+  bankId!: string;
+
+  @IsArray()
+  @IsNotEmpty()
+  category!: string[];
 }
 
 export class IdTransactionDto {

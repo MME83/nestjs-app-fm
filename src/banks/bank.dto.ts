@@ -1,14 +1,16 @@
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID, Length } from 'class-validator';
 
 export class CreateBankDto {
   @IsString()
   @IsNotEmpty()
-  public name: string;
+  @Length(3, 64)
+  public name!: string;
 }
 
 export class UpdateBankDto {
   @IsString()
   @IsNotEmpty()
+  @Length(3, 64)
   public name: string;
 }
 

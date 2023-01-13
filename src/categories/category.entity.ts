@@ -13,7 +13,7 @@ export class Category {
   @PrimaryGeneratedColumn('uuid')
   public id!: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 20, unique: true })
   public name!: string;
 
   @CreateDateColumn({ type: 'timestamp' })

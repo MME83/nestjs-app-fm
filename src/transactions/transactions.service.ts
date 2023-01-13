@@ -1,13 +1,10 @@
-import {
-  //ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTransactionDto, IdTransactionDto } from './transaction.dto';
 import { Transaction } from './transaction.entity';
 import { BanksService } from '../banks/banks.service';
+import { CategoriesService } from '../categories/categories.service';
 
 @Injectable()
 export class TransactionsService {
@@ -15,19 +12,26 @@ export class TransactionsService {
     @InjectRepository(Transaction)
     private readonly transactionsRepository: Repository<Transaction>,
     private readonly bankService: BanksService,
+    private readonly categoriesService: CategoriesService,
   ) {}
 
   async addTransaction(
     createTransactionDto: CreateTransactionDto,
   ): Promise<Transaction> {
-    const newTransaction =
-      this.transactionsRepository.create(createTransactionDto);
-
     const bank = await this.bankService.getBankById({
       id: createTransactionDto.bankId,
     });
 
-    newTransaction.bank = bank;
+    const newTransaction =
+      this.transactionsRepository.create(createTransactionDto);
+    newTransaction.bank = { ...bank };
+
+    const categories = await this.categoriesService.getCategoriesByNames(
+      createTransactionDto.category,
+    );
+    console.log('CATEGORIES--------> ', categories);
+
+    newTransaction.categories = [...categories];
 
     const savedTransaction = await this.transactionsRepository.save(
       newTransaction,
@@ -46,9 +50,14 @@ export class TransactionsService {
     const transactions = await this.transactionsRepository.find({
       relations: {
         bank: true,
+        categories: true,
       },
       select: {
         bank: {
+          id: true,
+          name: true,
+        },
+        categories: {
           id: true,
           name: true,
         },
@@ -58,23 +67,23 @@ export class TransactionsService {
     return transactions;
   }
 
-  async getTransactionsByBankId(bankId: string): Promise<Transaction[] | null> {
-    const transactions = await this.transactionsRepository.find({
-      where: {
-        bank: {
-          id: bankId,
-        },
-      },
-    });
+  // async getTransactionsByBankId(bankId: string): Promise<Transaction[] | null> {
+  //   const transactions = await this.transactionsRepository.find({
+  //     where: {
+  //       bank: {
+  //         id: bankId,
+  //       },
+  //     },
+  //   });
 
-    return transactions;
-  }
+  //   return transactions;
+  // }
 
   async deleteTransactionById(transactionId: IdTransactionDto): Promise<void> {
     const { id } = transactionId;
     const transaction = await this.transactionsRepository.findOne({
       where: { id },
-      relations: { bank: true },
+      relations: { bank: true, categories: true },
     });
 
     if (!transaction) {
