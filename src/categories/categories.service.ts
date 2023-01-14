@@ -1,9 +1,12 @@
 import {
   ConflictException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TransactionsService } from '../transactions/transactions.service';
 import { Repository, In } from 'typeorm';
 import {
   CategoryIdDto,
@@ -16,7 +19,9 @@ import { Category } from './category.entity';
 export class CategoriesService {
   constructor(
     @InjectRepository(Category)
-    private readonly categoriesRepository: Repository<Category>, //private readonly Service: TransactionsService,
+    private readonly categoriesRepository: Repository<Category>,
+    @Inject(forwardRef(() => TransactionsService))
+    private readonly transactionsService: TransactionsService,
   ) {}
 
   async getCategories(): Promise<Category[]> {
@@ -72,6 +77,13 @@ export class CategoriesService {
     }
 
     const newCategory = this.categoriesRepository.create(createCategoryDto);
+    const transactions =
+      await this.transactionsService.getTransactionsByCategoryName(name);
+
+    if (transactions.length > 0) {
+      newCategory.transactions = [...transactions];
+    }
+
     const savedCategory = await this.categoriesRepository.save(newCategory);
 
     return savedCategory;

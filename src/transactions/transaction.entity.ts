@@ -41,6 +41,9 @@ export class Transaction {
   @UpdateDateColumn({ type: 'timestamp' })
   public updatedAt!: Date;
 
+  @Column({ type: 'text', array: true, default: [] })
+  public category!: string[];
+
   /**
    * Relations with bank
    */

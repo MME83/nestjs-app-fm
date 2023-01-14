@@ -1,6 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ArrayContains, Repository } from 'typeorm';
 import {
   CreateTransactionDto,
   IdTransactionDto,
@@ -17,6 +22,7 @@ export class TransactionsService {
     @InjectRepository(Transaction)
     private readonly transactionsRepository: Repository<Transaction>,
     private readonly bankService: BanksService,
+    @Inject(forwardRef(() => CategoriesService))
     private readonly categoriesService: CategoriesService,
   ) {}
 
@@ -82,17 +88,19 @@ export class TransactionsService {
     return transactions;
   }
 
-  // async getTransactionsByBankId(bankId: string): Promise<Transaction[] | null> {
-  //   const transactions = await this.transactionsRepository.find({
-  //     where: {
-  //       bank: {
-  //         id: bankId,
-  //       },
-  //     },
-  //   });
+  async getTransactionsByCategoryName(
+    categoryName: string,
+  ): Promise<Transaction[]> {
+    const transactions = await this.transactionsRepository.find({
+      where: {
+        //category: Like(`%${categoryName}%`),
+        category: ArrayContains([categoryName]),
+      },
+    });
 
-  //   return transactions;
-  // }
+    console.log('transactions: -----> ', transactions);
+    return transactions;
+  }
 
   async deleteTransactionById(transactionId: IdTransactionDto): Promise<void> {
     const { id } = transactionId;
