@@ -7,6 +7,7 @@ import {
   IsArray,
   IsInt,
   Min,
+  IsString,
 } from 'class-validator';
 import { TransactionType } from './transaction.entity';
 
@@ -42,4 +43,10 @@ export class PaginationDto {
   @IsInt()
   @Type(() => Number)
   limit?: number;
+}
+
+export class TransactionHeaderDto {
+  @IsString()
+  @IsNotEmpty()
+  'fm-api-key'!: string;
 }
