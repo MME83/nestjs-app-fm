@@ -1,10 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateTransactionDto, IdTransactionDto } from './transaction.dto';
+import {
+  CreateTransactionDto,
+  IdTransactionDto,
+  PaginationDto,
+} from './transaction.dto';
 import { Transaction } from './transaction.entity';
 import { BanksService } from '../banks/banks.service';
 import { CategoriesService } from '../categories/categories.service';
+import { pagination } from '../common/const.pagination';
 
 @Injectable()
 export class TransactionsService {
@@ -46,8 +51,18 @@ export class TransactionsService {
     return savedTransaction;
   }
 
-  async getTransactions(): Promise<Array<Transaction>> {
+  async getTransactions(
+    paginationDto: PaginationDto,
+  ): Promise<Array<Transaction>> {
+    console.log('SERVICE_PAGINATION_------------->: ', paginationDto);
+
+    const { page = pagination.DEFAULT_PAGE, limit = pagination.DEFAULT_PAGE } =
+      paginationDto;
+    const offset = (page - 1) * limit;
+
     const transactions = await this.transactionsRepository.find({
+      take: limit,
+      skip: offset,
       relations: {
         bank: true,
         categories: true,

@@ -1,6 +1,18 @@
-import { Controller, Post, Body, Get, Delete, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Delete,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
-import { CreateTransactionDto, IdTransactionDto } from './transaction.dto';
+import {
+  CreateTransactionDto,
+  IdTransactionDto,
+  PaginationDto,
+} from './transaction.dto';
 import { Transaction } from './transaction.entity';
 
 @Controller('transactions')
@@ -15,8 +27,10 @@ export class TransactionsController {
   }
 
   @Get()
-  async getTransactions(): Promise<Transaction[]> {
-    return await this.transactionsService.getTransactions();
+  async getTransactions(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<Transaction[]> {
+    return await this.transactionsService.getTransactions(paginationDto);
   }
 
   @Delete(':id')

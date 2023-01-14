@@ -1,10 +1,12 @@
+import { Type } from 'class-transformer';
 import {
   IsNotEmpty,
-  //IsString,
   IsNumber,
   IsUUID,
   IsEnum,
   IsArray,
+  IsInt,
+  Min,
 } from 'class-validator';
 import { TransactionType } from './transaction.entity';
 
@@ -29,4 +31,15 @@ export class CreateTransactionDto {
 export class IdTransactionDto {
   @IsUUID()
   id: string;
+}
+
+export class PaginationDto {
+  @IsInt()
+  @Min(1)
+  @Type(() => Number)
+  page?: number;
+
+  @IsInt()
+  @Type(() => Number)
+  limit?: number;
 }
