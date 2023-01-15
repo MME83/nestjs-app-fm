@@ -15,6 +15,7 @@ export class UpdateCategoryDto {
 }
 
 export class CategoryIdDto {
+  @IsNotEmpty()
   @IsUUID()
   id: string;
 }

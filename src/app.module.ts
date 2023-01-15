@@ -7,6 +7,9 @@ import { configSchemaValidation } from './config.schema';
 import { BanksModule } from './banks/banks.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { CategoriesModule } from './categories/categories.module';
+import { ReportsService } from './reports/reports.service';
+import { ReportsController } from './reports/reports.controller';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -37,8 +40,9 @@ import { CategoriesModule } from './categories/categories.module';
     BanksModule,
     TransactionsModule,
     CategoriesModule,
+    ReportsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, ReportsController],
+  providers: [AppService, ReportsService],
 })
 export class AppModule {}

@@ -62,6 +62,23 @@ export class CategoriesService {
     return categories;
   }
 
+  async getCategoriesByIds(categoryIds: CategoryIdDto[]): Promise<Category[]> {
+    return await this.categoriesRepository.find({
+      where: { id: In(categoryIds) },
+      relations: {
+        transactions: true,
+      },
+      select: {
+        transactions: {
+          id: true,
+          amount: true,
+          type: true,
+          createdAt: true,
+        },
+      },
+    });
+  }
+
   async createCategory(
     createCategoryDto: CreateCategoryDto,
   ): Promise<Category> {
