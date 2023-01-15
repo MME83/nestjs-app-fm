@@ -1,11 +1,10 @@
-import { Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 import {
   IsNotEmpty,
   IsUUID,
   IsArray,
   ArrayUnique,
   ArrayMinSize,
-  //ArrayNotEmpty,
   IsDate,
 } from 'class-validator';
 import { CategoryIdDto } from '../categories/category.dto';
@@ -19,7 +18,6 @@ export class GetReportDto {
 
   @IsNotEmpty()
   @Type(() => Date)
-  //@Transform((value) => value.toISOString())
   @IsDate()
   public fromPeriod!: Date;
 
