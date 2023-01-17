@@ -40,7 +40,6 @@ export class TransactionsService {
     const categories = await this.categoriesService.getCategoriesByNames(
       createTransactionDto.category,
     );
-    console.log('CATEGORIES--------> ', categories);
 
     newTransaction.categories = [...categories];
 
@@ -60,8 +59,6 @@ export class TransactionsService {
   async getTransactions(
     paginationDto: PaginationDto,
   ): Promise<Array<Transaction>> {
-    console.log('SERVICE_PAGINATION_------------->: ', paginationDto);
-
     const { page = pagination.DEFAULT_PAGE, limit = pagination.DEFAULT_PAGE } =
       paginationDto;
     const offset = (page - 1) * limit;
@@ -98,7 +95,6 @@ export class TransactionsService {
       },
     });
 
-    console.log('transactions: -----> ', transactions);
     return transactions;
   }
 

@@ -31,7 +31,6 @@ import { ReportsModule } from './reports/reports.module';
           password: configService.get('DB_PASSWORD'),
           database: configService.get('DB_DATABASE'),
           autoLoadEntities: true,
-          //migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
           synchronize: false,
           logging: true,
         };

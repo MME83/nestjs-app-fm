@@ -49,4 +49,5 @@ export class TransactionHeaderDto {
   @IsString()
   @IsNotEmpty()
   'fm-api-key'!: string;
+  'Content-Type'!: 'application/json';
 }
