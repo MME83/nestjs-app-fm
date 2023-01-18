@@ -2,21 +2,35 @@ import { Controller, Get, HttpStatus, Query } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiInternalServerErrorResponse,
+  ApiOperation,
+  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { GetReportDto, ReportDto } from './report.dto';
+import { GetReportDto, ReportDto, SwaggerReportRes } from './report.dto';
 import { ReportsService } from './reports.service';
-import { ResponseSuccess } from '../utilities/helper.dto';
+import { ResponseSuccess, SwaggerApiError } from '../utilities/helper.dto';
 import { Helper } from '../utilities/helper';
+import { descriptions } from '../common/const.descriptions';
 
-@Controller('api/reports')
 @ApiTags('reports')
+@Controller('api/reports')
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService) {}
 
   @Get('/')
-  @ApiBadRequestResponse()
-  @ApiInternalServerErrorResponse()
+  @ApiOperation({ description: descriptions.GET_REPORT })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: SwaggerReportRes,
+  })
+  @ApiBadRequestResponse({
+    description: descriptions.BAD_REQUEST,
+    type: SwaggerApiError,
+  })
+  @ApiInternalServerErrorResponse({
+    description: descriptions.INTERNAL_SERVER_ERROR,
+    type: SwaggerApiError,
+  })
   async getReport(
     @Query() getReportDto: GetReportDto,
   ): Promise<ResponseSuccess<ReportDto>> {

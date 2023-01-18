@@ -1,3 +1,4 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   Entity,
   Column,
@@ -10,9 +11,11 @@ import { Transaction } from '../transactions/transaction.entity';
 
 @Entity()
 export class Category {
+  @ApiProperty({ description: 'category id, type UUId' })
   @PrimaryGeneratedColumn('uuid')
   public id!: string;
 
+  @ApiProperty({ description: 'category name is unique' })
   @Column({ type: 'varchar', length: 20, unique: true })
   public name!: string;
 
@@ -25,6 +28,9 @@ export class Category {
   /**
    * Relations with transactions
    */
+  @ApiProperty({
+    description: 'Transaction entities, OneToMany relation',
+  })
   @ManyToMany(() => Transaction, (transaction) => transaction.categories)
   transactions: Transaction[];
 }

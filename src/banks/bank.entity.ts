@@ -11,7 +11,7 @@ import { Transaction } from '../transactions/transaction.entity';
 
 @Entity()
 export class Bank {
-  @ApiProperty()
+  @ApiProperty({ description: 'bank id, type UUId' })
   @PrimaryGeneratedColumn('uuid')
   public id!: string;
 
@@ -19,7 +19,7 @@ export class Bank {
   @Column({ type: 'varchar', length: 64, unique: true })
   public name!: string;
 
-  @ApiProperty()
+  @ApiProperty({ default: 0 })
   @Column({ default: 0 })
   public balance!: number;
 
@@ -38,7 +38,7 @@ export class Bank {
    * Relations with transactions, one-to-many (bank -> transactions)
    */
   @ApiProperty({
-    description: 'Transaction entity, OneToMany relation',
+    description: 'Transaction entities, OneToMany relation',
   })
   @ApiPropertyOptional()
   @OneToMany(() => Transaction, (transaction) => transaction.bank)

@@ -13,9 +13,16 @@ import {
   ApiConflictResponse,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { ResponseSuccess } from 'src/utilities/helper.dto';
+import {
+  ApiSwaggerResponse,
+  ApiSwaggerResponseArr,
+  ResponseSuccess,
+  SwaggerApiError,
+} from '../utilities/helper.dto';
 import { Helper } from '../utilities/helper';
 import { CategoriesService } from './categories.service';
 import {
@@ -24,6 +31,7 @@ import {
   UpdateCategoryDto,
 } from './category.dto';
 import { Category } from './category.entity';
+import { descriptions } from '../common/const.descriptions';
 
 @Controller('api/categories')
 @ApiTags('categories')
@@ -31,9 +39,20 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
-  @ApiBadRequestResponse()
-  @ApiConflictResponse()
-  @ApiInternalServerErrorResponse()
+  @ApiOperation({ description: descriptions.CREATE_CATEGORY })
+  @ApiSwaggerResponse(Category)
+  @ApiBadRequestResponse({
+    description: descriptions.BAD_REQUEST,
+    type: SwaggerApiError,
+  })
+  @ApiConflictResponse({
+    description: descriptions.CONFLICT_NAME,
+    type: SwaggerApiError,
+  })
+  @ApiInternalServerErrorResponse({
+    description: descriptions.INTERNAL_SERVER_ERROR,
+    type: SwaggerApiError,
+  })
   async createCategory(
     @Body() createCategoryDto: CreateCategoryDto,
   ): Promise<ResponseSuccess<Category>> {
@@ -42,16 +61,32 @@ export class CategoriesController {
   }
 
   @Get()
-  @ApiInternalServerErrorResponse()
+  @ApiOperation({ description: descriptions.GET_ALL })
+  @ApiSwaggerResponseArr(Category)
+  @ApiInternalServerErrorResponse({
+    description: descriptions.INTERNAL_SERVER_ERROR,
+    type: SwaggerApiError,
+  })
   async getCategories(): Promise<ResponseSuccess<Category[]>> {
     const data = await this.categoriesService.getCategories();
     return Helper.resSuccess(HttpStatus.OK, data);
   }
 
   @Get(':id')
-  @ApiBadRequestResponse()
-  @ApiNotFoundResponse()
-  @ApiInternalServerErrorResponse()
+  @ApiOperation({ description: descriptions.GET_ONEBY_ID })
+  @ApiSwaggerResponse(Category)
+  @ApiBadRequestResponse({
+    description: descriptions.BAD_REQUEST,
+    type: SwaggerApiError,
+  })
+  @ApiNotFoundResponse({
+    description: descriptions.NOT_FOUND,
+    type: SwaggerApiError,
+  })
+  @ApiInternalServerErrorResponse({
+    description: descriptions.INTERNAL_SERVER_ERROR,
+    type: SwaggerApiError,
+  })
   async getCategoryById(
     @Param() categoryId: CategoryIdDto,
   ): Promise<ResponseSuccess<Category>> {
@@ -60,10 +95,24 @@ export class CategoriesController {
   }
 
   @Patch(':id')
-  @ApiBadRequestResponse()
-  @ApiNotFoundResponse()
-  @ApiConflictResponse()
-  @ApiInternalServerErrorResponse()
+  @ApiOperation({ description: descriptions.UPDATE_ENTITY_UNIQUE_NAME })
+  @ApiSwaggerResponse(Category)
+  @ApiBadRequestResponse({
+    description: descriptions.BAD_REQUEST,
+    type: SwaggerApiError,
+  })
+  @ApiNotFoundResponse({
+    description: descriptions.NOT_FOUND,
+    type: SwaggerApiError,
+  })
+  @ApiConflictResponse({
+    description: descriptions.CONFLICT_NAME,
+    type: SwaggerApiError,
+  })
+  @ApiInternalServerErrorResponse({
+    description: descriptions.INTERNAL_SERVER_ERROR,
+    type: SwaggerApiError,
+  })
   async updateCategoryById(
     @Param() categoryId: CategoryIdDto,
     @Body() updateCategoryDto: UpdateCategoryDto,
@@ -76,10 +125,24 @@ export class CategoriesController {
   }
 
   @Delete(':id')
-  @ApiBadRequestResponse()
-  @ApiNotFoundResponse()
-  @ApiConflictResponse()
-  @ApiInternalServerErrorResponse()
+  @ApiOperation({ description: descriptions.DELETE_ENTITY_NO_TRANSACTIONS })
+  @ApiOkResponse()
+  @ApiBadRequestResponse({
+    description: descriptions.BAD_REQUEST,
+    type: SwaggerApiError,
+  })
+  @ApiNotFoundResponse({
+    description: descriptions.NOT_FOUND,
+    type: SwaggerApiError,
+  })
+  @ApiConflictResponse({
+    description: descriptions.CONFLICT_TRANSACTIONS,
+    type: SwaggerApiError,
+  })
+  @ApiInternalServerErrorResponse({
+    description: descriptions.INTERNAL_SERVER_ERROR,
+    type: SwaggerApiError,
+  })
   deleteCategoryById(@Param() categoryId: CategoryIdDto): Promise<void> {
     return this.categoriesService.deleteCategoryById(categoryId);
   }

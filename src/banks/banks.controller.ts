@@ -27,6 +27,7 @@ import {
   ApiOperation,
   ApiOkResponse,
 } from '@nestjs/swagger';
+import { descriptions } from '../common/const.descriptions';
 
 @ApiTags('banks')
 @Controller('api/banks')
@@ -35,21 +36,18 @@ export class BanksController {
   constructor(private readonly banksService: BanksService) {}
 
   @Post()
-  @ApiOperation({ description: 'Create Bank entity' })
+  @ApiOperation({ description: descriptions.CREATE_ENTITY })
   @ApiSwaggerResponse(Bank)
   @ApiBadRequestResponse({
-    status: HttpStatus.BAD_REQUEST,
-    description: 'Bad Request',
+    description: descriptions.BAD_REQUEST,
     type: SwaggerApiError,
   })
   @ApiConflictResponse({
-    status: HttpStatus.CONFLICT,
-    description: 'Conflict',
+    description: descriptions.CONFLICT_NAME,
     type: SwaggerApiError,
   })
   @ApiInternalServerErrorResponse({
-    status: HttpStatus.INTERNAL_SERVER_ERROR,
-    description: 'Internal Server Error',
+    description: descriptions.INTERNAL_SERVER_ERROR,
     type: SwaggerApiError,
   })
   async createBank(
@@ -60,11 +58,10 @@ export class BanksController {
   }
 
   @Get()
-  @ApiOperation({ description: 'Get all Bank entities' })
+  @ApiOperation({ description: descriptions.GET_ALL })
   @ApiSwaggerResponseArr(Bank)
   @ApiInternalServerErrorResponse({
-    status: HttpStatus.INTERNAL_SERVER_ERROR,
-    description: 'Internal Server Error',
+    description: descriptions.INTERNAL_SERVER_ERROR,
     type: SwaggerApiError,
   })
   async getBanks(): Promise<ResponseSuccess<Bank[]>> {
@@ -73,17 +70,18 @@ export class BanksController {
   }
 
   @Get(':id')
-  @ApiOperation({ description: 'Get Bank entity by Id' })
+  @ApiOperation({ description: descriptions.GET_ONEBY_ID })
   @ApiSwaggerResponse(Bank)
   @ApiBadRequestResponse({
-    description: 'Bad Request',
+    description: descriptions.BAD_REQUEST,
     type: SwaggerApiError,
   })
   @ApiNotFoundResponse({
-    description: 'Not found entity',
+    description: descriptions.NOT_FOUND,
     type: SwaggerApiError,
   })
   @ApiInternalServerErrorResponse({
+    description: descriptions.INTERNAL_SERVER_ERROR,
     type: SwaggerApiError,
   })
   async getBankById(
@@ -95,21 +93,23 @@ export class BanksController {
 
   @Patch(':id')
   @ApiOperation({
-    description: 'Update Bank entity by Id, bank property "name" is unique',
+    description: descriptions.UPDATE_ENTITY_UNIQUE_NAME,
   })
   @ApiSwaggerResponse(Bank)
   @ApiBadRequestResponse({
+    description: descriptions.BAD_REQUEST,
     type: SwaggerApiError,
   })
   @ApiNotFoundResponse({
-    description: 'Not found entity',
+    description: descriptions.NOT_FOUND,
     type: SwaggerApiError,
   })
   @ApiConflictResponse({
-    description: 'Conflict entity name, is already in DB',
+    description: descriptions.CONFLICT_NAME,
     type: SwaggerApiError,
   })
   @ApiInternalServerErrorResponse({
+    description: descriptions.INTERNAL_SERVER_ERROR,
     type: SwaggerApiError,
   })
   async updateBankById(
@@ -125,22 +125,23 @@ export class BanksController {
 
   @Delete(':id')
   @ApiOperation({
-    description: 'Delete Bank entity by Id, if bank has no transactions',
+    description: descriptions.DELETE_ENTITY_NO_TRANSACTIONS,
   })
   @ApiOkResponse()
   @ApiBadRequestResponse({
-    description: 'Bad Request',
+    description: descriptions.BAD_REQUEST,
     type: SwaggerApiError,
   })
   @ApiNotFoundResponse({
-    description: 'Not found entity',
+    description: descriptions.NOT_FOUND,
     type: SwaggerApiError,
   })
   @ApiConflictResponse({
-    description: 'Conflict entity transactions, has transactions',
+    description: descriptions.CONFLICT_TRANSACTIONS,
     type: SwaggerApiError,
   })
   @ApiInternalServerErrorResponse({
+    description: descriptions.INTERNAL_SERVER_ERROR,
     type: SwaggerApiError,
   })
   deleteBankById(@Param() getBankDto: GetBankDto): Promise<void> {

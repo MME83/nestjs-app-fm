@@ -8,8 +8,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   JoinTable,
-  //BeforeInsert,
-  //BeforeUpdate,
 } from 'typeorm';
 import { Bank } from '../banks/bank.entity';
 
