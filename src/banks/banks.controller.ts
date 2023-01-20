@@ -113,7 +113,7 @@ export class BanksController {
     type: SwaggerApiError,
   })
   async updateBankById(
-    @Param() getBankDto: GetBankDto,
+    @Param('id') getBankDto: GetBankDto,
     @Body() updateBankDto: UpdateBankDto,
   ): Promise<ResponseSuccess<Bank>> {
     const data = await this.banksService.updateBankById(

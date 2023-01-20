@@ -26,6 +26,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, swaggerConfig, options);
   SwaggerModule.setup('api-doc', app, document);
+  app.enableCors();
 
   app.useGlobalFilters(new CustomExceptionFilter());
   await app.listen(port);

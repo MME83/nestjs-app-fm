@@ -20,11 +20,9 @@ import { ReportsModule } from './reports/reports.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (
-        configService: ConfigService,
-      ): Promise<TypeOrmModuleOptions> => {
+      useFactory: async (configService: ConfigService) => {
         return {
-          type: 'postgres',
+          type: configService.get('DB_TYPE'),
           host: configService.get('DB_HOST'),
           port: configService.get('DB_PORT'),
           username: configService.get('DB_USERNAME'),
@@ -33,7 +31,7 @@ import { ReportsModule } from './reports/reports.module';
           autoLoadEntities: true,
           synchronize: false,
           logging: true,
-        };
+        } as TypeOrmModuleOptions;
       },
     }),
     BanksModule,

@@ -1,18 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoryController } from './categories.controller';
+import { CategoriesController } from './categories.controller';
+import { CategoriesService } from './categories.service';
 
 describe('CategoryController', () => {
-  let controller: CategoryController;
+  let controller: CategoriesController;
+  let mockCategoriesService = {
+    getCategory: {},
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [CategoryController],
-    }).compile();
+      controllers: [CategoriesController],
+      providers: [CategoriesService],
+    })
+      .overrideProvider(CategoriesService)
+      .useValue(mockCategoriesService)
+      .compile();
 
-    controller = module.get<CategoryController>(CategoryController);
+    controller = module.get<CategoriesController>(CategoriesController);
   });
 
-  it('should be defined', () => {
+  it('Category controller should be defined', () => {
     expect(controller).toBeDefined();
+  });
+
+  it('categoryService should be defined', () => {
+    expect(mockCategoriesService).toBeDefined();
   });
 });
