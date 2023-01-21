@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Type } from '@nestjs/class-transformer';
 import {
   IsNotEmpty,
   IsUUID,
@@ -7,7 +7,7 @@ import {
   ArrayUnique,
   ArrayMinSize,
   IsDate,
-} from 'class-validator';
+} from '@nestjs/class-validator';
 import { CategoryIdDto } from '../categories/category.dto';
 
 export class GetReportDto {

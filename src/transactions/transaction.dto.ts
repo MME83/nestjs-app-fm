@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Type } from '@nestjs/class-transformer';
 import {
   IsNotEmpty,
   IsNumber,
@@ -10,7 +10,7 @@ import {
   Min,
   IsString,
   IsDefined,
-} from 'class-validator';
+} from '@nestjs/class-validator';
 import { headers_const } from '../common/const.headers';
 import { TransactionType } from './transaction.entity';
 

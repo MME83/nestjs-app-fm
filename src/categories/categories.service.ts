@@ -130,17 +130,16 @@ export class CategoriesService {
 
   async deleteCategoryById(categoryId: CategoryIdDto): Promise<void> {
     const { id } = categoryId;
-    const category = await this.categoriesRepository.find({
+    const category = await this.categoriesRepository.findOne({
       where: { id },
       relations: { transactions: true },
-      take: 1,
     });
 
     if (!category) {
       throw new NotFoundException(`Category with id ${id} not found`);
     }
 
-    if (category[0].transactions?.length > 0) {
+    if (category.transactions?.length > 0) {
       throw new ConflictException(
         "Can't delete category with existing transactions. Please delete transactions first.",
       );

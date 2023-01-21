@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsUUID, Length } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID, Length } from '@nestjs/class-validator';
 
 export class CreateCategoryDto {
   @IsString()

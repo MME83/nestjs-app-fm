@@ -152,30 +152,28 @@ describe('BanksService', () => {
 
   it('deleteBankById, should delete a bank by id', async () => {
     const getBankDto: GetBankDto = { id: bankA.id };
-    banksRepository.find.mockResolvedValueOnce([bankA]);
+    banksRepository.findOne.mockResolvedValueOnce(bankA);
     banksRepository.remove.mockResolvedValueOnce(undefined);
 
     await service.deleteBankById(getBankDto);
 
-    expect(banksRepository.find).toHaveBeenCalledWith({
+    expect(banksRepository.findOne).toHaveBeenCalledWith({
       where: { id: bankA.id },
       relations: { transactions: true },
-      take: 1,
     });
     expect(banksRepository.remove).toHaveBeenCalledWith(bankA);
   });
 
   it('deleteBankById, should throw an error - bank not found', async () => {
     const getBankDto: GetBankDto = { id: bankA.id };
-    banksRepository.find.mockResolvedValueOnce(undefined);
+    banksRepository.findOne.mockResolvedValueOnce(null);
 
     await expect(service.deleteBankById(getBankDto)).rejects.toThrow(
       NotFoundException,
     );
-    expect(banksRepository.find).toHaveBeenCalledWith({
+    expect(banksRepository.findOne).toHaveBeenCalledWith({
       where: { id: bankA.id },
       relations: { transactions: true },
-      take: 1,
     });
     expect(banksRepository.remove).not.toHaveBeenCalled();
   });
@@ -184,15 +182,14 @@ describe('BanksService', () => {
     bankA.transactions = [new Transaction()];
 
     const getBankDto: GetBankDto = { id: bankA.id };
-    banksRepository.find.mockResolvedValueOnce([bankA]);
+    banksRepository.findOne.mockResolvedValueOnce(bankA);
 
     await expect(service.deleteBankById(getBankDto)).rejects.toThrow(
       ConflictException,
     );
-    expect(banksRepository.find).toHaveBeenCalledWith({
+    expect(banksRepository.findOne).toHaveBeenCalledWith({
       where: { id: bankA.id },
       relations: { transactions: true },
-      take: 1,
     });
     expect(banksRepository.remove).not.toHaveBeenCalled();
   });

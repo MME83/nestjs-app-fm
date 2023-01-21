@@ -5,7 +5,7 @@ import { TransactionsController } from './transactions.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Transaction } from './transaction.entity';
 import { BanksModule } from '../banks/banks.module';
-import { CategoriesModule } from 'src/categories/categories.module';
+import { CategoriesModule } from '../categories/categories.module';
 
 @Module({
   imports: [

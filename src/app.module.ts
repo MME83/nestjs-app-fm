@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { configSchemaValidation } from './config.schema';
 import { BanksModule } from './banks/banks.module';
 import { TransactionsModule } from './transactions/transactions.module';
@@ -40,6 +39,6 @@ import { ReportsModule } from './reports/reports.module';
     ReportsModule,
   ],
   controllers: [AppController, ReportsController],
-  providers: [AppService, ReportsService],
+  providers: [ReportsService],
 })
 export class AppModule {}

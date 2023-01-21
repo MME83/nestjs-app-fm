@@ -4,7 +4,7 @@ import { CategoriesService } from './categories.service';
 
 describe('CategoryController', () => {
   let controller: CategoriesController;
-  let mockCategoriesService = {
+  const mockCategoriesService = {
     getCategory: {},
   };
 

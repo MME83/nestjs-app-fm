@@ -9,7 +9,7 @@ describe('CategoryService', () => {
   let service: CategoriesService;
   let categoriesRepository: jest.Mocked<Repository<Category>>;
   const CATEGORY_REPO_TOKEN = getRepositoryToken(Category);
-  let mockTransactionsService = {
+  const mockTransactionsService = {
     getTransactionsByCategoryName: jest.fn(() => {
       return {};
     }),

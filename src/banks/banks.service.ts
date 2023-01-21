@@ -74,23 +74,23 @@ export class BanksService {
 
   async deleteBankById(getBankDto: GetBankDto): Promise<void> {
     const { id } = getBankDto;
-    const bank = await this.banksRepository.find({
+    const bank = await this.banksRepository.findOne({
       where: { id },
       relations: { transactions: true },
-      take: 1,
+      //    take: 1,
     });
 
     if (!bank) {
       throw new NotFoundException(`Bank with id ${id} not found`);
     }
 
-    if (bank[0].transactions?.length > 0) {
+    if (bank.transactions?.length > 0) {
       throw new ConflictException(
         "Can't delete bank with existing transactions. Please delete transactions first.",
       );
     }
 
-    await this.banksRepository.remove(bank[0]);
+    await this.banksRepository.remove(bank);
   }
 
   async calculateBankBalance(
