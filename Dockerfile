@@ -30,15 +30,24 @@ CMD ["npm", "run", "start:dev"]
 
 FROM base AS test
 ENV NODE_ENV=test
-CMD ["npm", "run", "test"]
+RUN npm install && npm cache clean --force && npm install -g @nestjs/cli
+COPY . .
 
 FROM base AS test-cov
-CMD ["npm", "run", "test:cov"]
+RUN npm install && npm cache clean --force && npm install -g @nestjs/cli
+COPY . .
 
 FROM base AS test-watch
 ENV GIT_WORK_TREE=/app GIT_DIR=/app/.git
 # RUN apk add git
+RUN npm install && npm cache clean --force && npm install -g @nestjs/cli
+COPY . .
 CMD ["npm", "run", "test:watch"]
+
+FROM base AS test-e2e
+ENV NODE_ENV=development
+RUN npm install && npm cache clean --force && npm install -g @nestjs/cli
+COPY . .
 
 FROM base AS prod
 ENV NODE_ENV=production

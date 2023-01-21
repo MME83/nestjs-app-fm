@@ -26,29 +26,31 @@ describe('App (e2e)', () => {
   describe('BanksModule', () => {
     const res = { status: 'success', statusCode: 200, data: {} };
 
-    // first, clear all banks from db
+    // first, clear all transactions & banks from db
     beforeEach(async () => {
       const unclearedTransactions = await request(app.getHttpServer()).get(
-        'api/transactions?page=1&limit=100',
+        '/api/transactions?page=1&limit=100',
       );
       await Promise.all(
         unclearedTransactions.body.data.map(async (transaction) => {
-          return request(app.getHttpServer()).delete(
+          return await request(app.getHttpServer()).delete(
             `/api/transactions/${transaction.id}`,
           );
         }),
       );
 
       const unclearedBanks = await request(app.getHttpServer()).get(
-        'api/banks',
+        '/api/banks',
       );
       await Promise.all(
         unclearedBanks.body.data.map(async (bank) => {
-          return request(app.getHttpServer()).delete(
-            `/api/transactions/${bank.id}`,
+          return await request(app.getHttpServer()).delete(
+            `/api/banks/${bank.id}`,
           );
         }),
       );
+
+      console.log('Transactions & Banks have been deleted from DB');
     });
 
     it('Post bank, get all, get by id, update by id, get by id, delete', async () => {
@@ -68,9 +70,9 @@ describe('App (e2e)', () => {
         data: {
           ...bank,
           id: expect.any(String),
-          amount: 0,
-          createdAt: expect.any(Date),
-          updatedAt: expect.any(Date),
+          balance: 0,
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
         },
       });
 
@@ -84,9 +86,9 @@ describe('App (e2e)', () => {
       expect(banks.body.data[0]).toEqual({
         ...bank,
         id: expect.any(String),
-        amount: 0,
-        createdAt: expect.any(Date),
-        updatedAt: expect.any(Date),
+        balance: 0,
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
       });
 
       // Get bank by id
@@ -94,15 +96,16 @@ describe('App (e2e)', () => {
         .get(`/api/banks/${data.body.data.id}`)
         .expect(200);
 
-      expect(bank2.body).toEqual(data.body);
+      expect(bank2.body).toEqual({ ...data.body, statusCode: 200 });
 
       // Update bank by id
       const bank3 = await request(app.getHttpServer())
-        .patch(`/api/banks/${data.body.data.id}`)
+        .patch(`/api/banks/${bank2.body.data.id}`)
         .send({ name: 'SCS bank' })
         .expect(200);
       expect(bank3.body.data).toEqual({
-        ...data.body.data,
+        ...bank2.body.data,
+        updatedAt: expect.any(String),
         name: 'SCS bank',
       });
 
@@ -110,13 +113,12 @@ describe('App (e2e)', () => {
       const updatedBank = await request(app.getHttpServer())
         .get(`/api/banks/${data.body.data.id}`)
         .expect(200);
-      expect(updatedBank.body).toEqual(bank3.body);
+      expect(updatedBank.body).toEqual({ ...bank3.body, statusCode: 200 });
 
       // delete bank
       return request(app.getHttpServer())
-        .delete(`api/banks/${data.body.data.id}`)
+        .delete(`/api/banks/${data.body.data.id}`)
         .expect(200);
-      //.expect({ delete: true });
     });
   });
 });

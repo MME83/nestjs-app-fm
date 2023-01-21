@@ -13,7 +13,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const port = process.env.PORT;
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      validatorPackage: require('@nestjs/class-validator'),
+      transformerPackage: require('@nestjs/class-transformer'),
+    }),
+  );
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Finance manager API')

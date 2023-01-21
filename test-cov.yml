@@ -1,6 +1,7 @@
 services:
-  app:
+  api:
     build:
       target: test-cov
+    command: npm run test:cov
     volumes:
       - ./coverage:/app/coverage

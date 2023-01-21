@@ -1,4 +1,5 @@
 services:
-  app:
+  api:
     build:
       target: test
+    command: npm run test

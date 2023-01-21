@@ -1,0 +1,7 @@
+services:
+  api:
+    build:
+      target: test-e2e
+    command: npm run test:e2e
+    volumes:
+      - ./src:/app/src
