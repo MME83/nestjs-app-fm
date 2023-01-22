@@ -47,11 +47,13 @@ export class TransactionsService {
       newTransaction,
     );
 
-    await this.bankService.calculateBankBalance(
+    const updatedBank = await this.bankService.calculateBankBalance(
       bank,
       createTransactionDto.amount,
       createTransactionDto.type,
     );
+
+    savedTransaction.bank.balance = updatedBank.balance;
 
     return savedTransaction;
   }

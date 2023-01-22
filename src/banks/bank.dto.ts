@@ -15,6 +15,7 @@ export class UpdateBankDto {
 }
 
 export class GetBankDto {
+  @IsNotEmpty()
   @IsUUID()
   id: string;
 }

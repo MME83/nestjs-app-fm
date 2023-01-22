@@ -39,6 +39,7 @@ export class Bank {
    */
   @ApiProperty({
     description: 'Transaction entities, OneToMany relation',
+    deprecated: true,
   })
   @ApiPropertyOptional()
   @OneToMany(() => Transaction, (transaction) => transaction.bank)

@@ -14,10 +14,13 @@ import {
   UpdateCategoryDto,
 } from './category.dto';
 import { Category } from './category.entity';
+//import { Transaction } from '../transactions/transaction.entity';
 
 @Injectable()
 export class CategoriesService {
   constructor(
+    //@InjectRepository(Transaction)
+    //private readonly transactionsRepository: Repository<Transaction>,
     @InjectRepository(Category)
     private readonly categoriesRepository: Repository<Category>,
     @Inject(forwardRef(() => TransactionsService))
@@ -113,10 +116,19 @@ export class CategoriesService {
     const { id } = categoryId;
     const { name } = updateCategoryDto;
 
-    const category = await this.categoriesRepository.findOneBy({ id });
+    const category = await this.categoriesRepository.findOne({
+      where: { id },
+      relations: { transactions: true },
+    });
 
     if (!category) {
       throw new NotFoundException(`Category with id:'${id}' not found`);
+    }
+
+    if (category.transactions?.length > 0) {
+      throw new ConflictException(
+        "Can't update category with existing transactions",
+      );
     }
 
     if (name === category.name) {
@@ -126,6 +138,29 @@ export class CategoriesService {
     }
 
     return await this.categoriesRepository.save({ ...category, name });
+    /*
+    // for future
+    const transactions = await this.transactionsRepository.find({
+      relations: { categories: true },
+      where: { categories: { id: category.id } },
+    });
+
+    // array of promises to update and save each transaction
+    const updateTransactions = transactions.map((transaction) => {
+      if (!transaction.category.includes(name)) {
+        transaction.categories = transaction.categories.filter(
+          (cat) => cat.id !== category.id,
+        );
+
+        return this.transactionsRepository.save(transaction);
+      }
+    });
+
+    // save all the updated transactions in parallel
+    await Promise.all(updateTransactions);
+
+    return await this.categoriesRepository.findOneBy({ id });
+    */
   }
 
   async deleteCategoryById(categoryId: CategoryIdDto): Promise<void> {
@@ -141,7 +176,7 @@ export class CategoriesService {
 
     if (category.transactions?.length > 0) {
       throw new ConflictException(
-        "Can't delete category with existing transactions. Please delete transactions first.",
+        "Can't delete category with existing transactions.",
       );
     }
 

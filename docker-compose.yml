@@ -31,7 +31,7 @@ services:
 
   pgadmin:
     container_name: pgadmin4_container
-    image: dpage/pgadmin4:6.18
+    image: dpage/pgadmin4:6.19
     restart: always
     ports:
       - 8080:80

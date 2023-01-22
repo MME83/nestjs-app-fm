@@ -12,14 +12,6 @@ async function bootstrap() {
   const logger = new Logger();
   const app = await NestFactory.create(AppModule);
   const port = process.env.PORT;
-
-  app.useGlobalPipes(
-    new ValidationPipe({
-      validatorPackage: require('@nestjs/class-validator'),
-      transformerPackage: require('@nestjs/class-transformer'),
-    }),
-  );
-
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Finance manager API')
     .setDescription('API recives bank transactions and shows stat')
@@ -28,9 +20,17 @@ async function bootstrap() {
   const options: SwaggerDocumentOptions = {
     deepScanRoutes: true,
   };
-
   const document = SwaggerModule.createDocument(app, swaggerConfig, options);
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      validatorPackage: require('@nestjs/class-validator'),
+      transformerPackage: require('@nestjs/class-transformer'),
+    }),
+  );
+
   SwaggerModule.setup('api-doc', app, document);
+
   app.enableCors();
 
   app.useGlobalFilters(new CustomExceptionFilter());

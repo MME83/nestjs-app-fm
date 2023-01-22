@@ -10,6 +10,7 @@ import {
   Headers,
   UnauthorizedException,
   HttpStatus,
+  Logger,
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import {
@@ -38,17 +39,22 @@ import {
 import { Helper } from '../utilities/helper';
 import { headers_const } from '../common/const.headers';
 import { descriptions } from '../common//const.descriptions';
+import { HttpService } from '@nestjs/axios';
 
 @Controller('api/transactions')
 @ApiTags('transactions')
 export class TransactionsController {
+  private readonly logger = new Logger(domains.DOMAIN_TRANSACTION);
+
   constructor(
     private readonly transactionsService: TransactionsService,
     private readonly configService: ConfigService,
+    private readonly httpService: HttpService,
   ) {}
 
   /**
-   * webhook
+   * receive new transaction data & our api-key from (Banks Enc.) other webhook bank apps
+   * as optional send to client (third app) created transaction data
    * @param
    * @returns
    */
@@ -83,6 +89,31 @@ export class TransactionsController {
     }
 
     const data = await this.transactionsService.addTransaction(transactionDto);
+    const informClient = Number(this.configService.get('INFORM_CLIENT'));
+    console.log('INFORM_CLIENT', informClient);
+
+    if (informClient) {
+      this.httpService
+        .post(this.configService.get('WEBHOOK_URI'), data)
+        .subscribe({
+          complete: () => {
+            this.logger.debug(
+              `Webhook sent with created transaction: ${JSON.stringify(data)}`,
+              `to ${this.configService.get('WEBHOOK_URI')}`,
+            );
+          },
+          error: (err) => {
+            this.logger.error(
+              `Error: when sending webhook: ${JSON.stringify(err.message)}`,
+              `Error.stack: ${this.configService.get(err.stack)}`,
+              `sending data, uri: ${JSON.stringify(
+                data,
+              )}, uri: ${this.configService.get('WEBHOOK_URI')}`,
+            );
+          },
+        });
+    }
+
     return Helper.resSuccess(HttpStatus.CREATED, data);
   }
 

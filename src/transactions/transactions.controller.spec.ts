@@ -1,3 +1,4 @@
+import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TransactionsController } from './transactions.controller';
@@ -15,16 +16,23 @@ describe('TransactionsController', () => {
       return API_KEY;
     }),
   };
+  const mockHttpService = {
+    post: jest.fn(() => {
+      return 'ok';
+    }),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TransactionsController],
-      providers: [TransactionsService, ConfigService],
+      providers: [TransactionsService, ConfigService, HttpService],
     })
       .overrideProvider(TransactionsService)
       .useValue(mockTransactionsService)
       .overrideProvider(ConfigService)
       .useValue(mockConfigService)
+      .overrideProvider(HttpService)
+      .useValue(mockHttpService)
       .compile();
 
     controller = module.get<TransactionsController>(TransactionsController);
@@ -40,5 +48,9 @@ describe('TransactionsController', () => {
 
   it('ConfigService should be defined', () => {
     expect(mockConfigService).toBeDefined();
+  });
+
+  it('HttpService should be defined', () => {
+    expect(mockHttpService).toBeDefined();
   });
 });

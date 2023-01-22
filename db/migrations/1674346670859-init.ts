@@ -1,11 +1,10 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class init1674263915930 implements MigrationInterface {
-    name = 'init1674263915930'
+export class init1674346670859 implements MigrationInterface {
+    name = 'init1674346670859'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "category" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying(20) NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "UQ_23c05c292c439d77b0de816b500" UNIQUE ("name"), CONSTRAINT "PK_9c4e4a89e3674fc9f382d733f03" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TYPE "public"."transaction_type_enum" AS ENUM('PROFITABLE', 'CONSUMABLE')`);
         await queryRunner.query(`CREATE TABLE "transaction" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "transactionId" character varying NOT NULL, "amount" integer NOT NULL, "type" "public"."transaction_type_enum" NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "category" text array NOT NULL DEFAULT '{}', "bankId" uuid, CONSTRAINT "PK_89eadb93a89810556e1cbcd6ab9" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "bank" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying(64) NOT NULL, "balance" integer NOT NULL DEFAULT '0', "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "UQ_11f196da2e68cef1c7e84b4fe94" UNIQUE ("name"), CONSTRAINT "PK_7651eaf705126155142947926e8" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "transaction_categories_category" ("transactionId" uuid NOT NULL, "categoryId" uuid NOT NULL, CONSTRAINT "PK_0d8a5d83b9b2fa5fd69e2f49e2a" PRIMARY KEY ("transactionId", "categoryId"))`);
@@ -25,7 +24,6 @@ export class init1674263915930 implements MigrationInterface {
         await queryRunner.query(`DROP TABLE "transaction_categories_category"`);
         await queryRunner.query(`DROP TABLE "bank"`);
         await queryRunner.query(`DROP TABLE "transaction"`);
-        await queryRunner.query(`DROP TYPE "public"."transaction_type_enum"`);
         await queryRunner.query(`DROP TABLE "category"`);
     }
 

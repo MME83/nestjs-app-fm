@@ -34,6 +34,7 @@
     "migration:revert": "npm run typeorm -- -d ./db/data-source.ts migration:revert"
   },
   "dependencies": {
+    "@nestjs/axios": "^1.0.1",
     "@nestjs/class-transformer": "^0.4.0",
     "@nestjs/class-validator": "^0.13.4",
     "@nestjs/common": "^9.2.1",
