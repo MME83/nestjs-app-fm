@@ -60,6 +60,8 @@ $ npm run test:e2e | $ docker-compose:test-e2e
 $ npm run test:cov | $ docker-compose:test-cov
 ```
 
+after tests, coverage available at the [link](http://127.0.0.1:5500/coverage/lcov-report/index.html) or in terminal
+
 ## API Documentation
 
 ### for local, pls run your app
