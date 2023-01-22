@@ -70,4 +70,5 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 - local. Swagger JSON Doc - [localhost:3000/api/doc-json](http://localhost:3000/api/doc-jon)
 - local. Swagger YAML Doc - [localhost:3000/api/doc-yaml](http://localhost:3000/api/doc-yaml)
 
-- External Swagger Doc - [static github page](https://)
+- External Swagger Doc - [static github page](https://mme83.github.io/nestjs-app-fm/index.html)
+- External Doc - [static github page 2](https://mme83.github.io/nestjs-app-fm/docs/index.html)
