@@ -20,41 +20,45 @@ Nest (TypeScript) repository API Finance Manager.
 # Used: NestJs, TypeORM 0.3, PostgreSQL, pgAdmin, Docker, unit/e2e tests by Jest/Supertest
 ```
 
-## Installation
+## Installation | Docker main App image Installation
 
 ```bash
-$ npm install
+$ npm install | $ docker build --tag nestjs-api .
 ```
 
-## Running the app
+## Running the app | Docker running the App as container
 
 ```bash
 # development
-$ npm run start
+$ npm run start | $ docker-compose:dev
 
 # watch mode
-$ npm run start:dev
+$ npm run start:dev | $ docker-compose:dev
 
 # production mode
-$ npm run start:prod
+$ npm run start:prod | $ docker-compose:prod
 ```
 
-## Test
+## DB Initialization, migration
+
+```bash
+# delevolpment, testing, production (in all cases you need run migration after docker-container DB is run)
+$ npm run migration:run
+```
+
+## Test | Docker run tests
 
 ```bash
 # unit tests
-$ npm run test
+$ npm run test | $ docker-compose:test
 
-# e2e tests
-$ npm run test:e2e
+# e2e tests (you need Docker DB container runing & run e2e test on the same environment)
+# run your test in container terminal or by docker command
+$ npm run test:e2e | $ docker-compose:test-e2e
 
-# test coverage
-$ npm run test:cov
+# test coverage, available after run at the [link](http://127.0.0.1:5500/coverage/lcov-report/index.html)
+$ npm run test:cov | $ docker-compose:test-cov
 ```
-
-## In Docker
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
 ## API Documentation
 
