@@ -408,6 +408,7 @@ paths:
         - name: id
           required: true
           in: path
+          description: Category id, UUId type
           schema:
             type: string
       responses:
@@ -448,6 +449,7 @@ paths:
         - name: id
           required: true
           in: path
+          description: Category id, UUId type
           schema:
             type: string
       requestBody:
@@ -500,6 +502,7 @@ paths:
         - name: id
           required: true
           in: path
+          description: Category id, UUId type
           schema:
             type: string
       responses:
@@ -544,6 +547,9 @@ paths:
           description: Category ids in array, UUId type
           schema:
             type: array
+            items:
+              description: categoryIds, in UUID format
+              type: string
         - name: fromPeriod
           required: true
           in: query

@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsString, IsUUID, Length } from '@nestjs/class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCategoryDto {
   @IsString()
@@ -15,6 +16,10 @@ export class UpdateCategoryDto {
 }
 
 export class CategoryIdDto {
+  @ApiProperty({
+    description: 'Category id, UUId type',
+    type: 'string',
+  })
   @IsNotEmpty()
   @IsUUID()
   id: string;
