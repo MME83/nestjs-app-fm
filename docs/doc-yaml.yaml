@@ -1,0 +1,817 @@
+openapi: 3.0.0
+paths:
+  /api/banks:
+    post:
+      operationId: BanksController_createBank
+      summary: ''
+      description: Create entity by schema
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBankDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseSuccess'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Bank'
+        '201':
+          description: ''
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '409':
+          description: Conflict entity name, is already in DB
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+      tags: &ref_0
+        - banks
+    get:
+      operationId: BanksController_getBanks
+      summary: ''
+      description: Get all entities from DB
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseSuccess'
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Bank'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+      tags: *ref_0
+  /api/banks/{id}:
+    get:
+      operationId: BanksController_getBankById
+      summary: ''
+      description: Get entity by id
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseSuccess'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Bank'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '404':
+          description: Entity not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+      tags: *ref_0
+    patch:
+      operationId: BanksController_updateBankById
+      summary: ''
+      description: Update entity, property "name" is unique
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBankDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseSuccess'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Bank'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '404':
+          description: Entity not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '409':
+          description: Conflict entity name, is already in DB
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+      tags: *ref_0
+    delete:
+      operationId: BanksController_deleteBankById
+      summary: ''
+      description: Delete entity, if it has no transactions
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '404':
+          description: Entity not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '409':
+          description: Conflict relation transactions, has transactions in DB
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+      tags: *ref_0
+  /api/transactions:
+    post:
+      operationId: TransactionsController_addTransaction
+      summary: ''
+      description: Create entity by schema
+      parameters:
+        - name: fm-api-key
+          required: true
+          in: header
+          description: webhook api-key
+          schema:
+            default: 12313asasasas%43r34f
+            type: string
+        - name: content-type
+          required: true
+          in: header
+          description: Header content-type
+          schema:
+            default: application/json
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTransactionDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseSuccess'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Transaction'
+        '201':
+          description: ''
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+      tags: &ref_1
+        - transactions
+    get:
+      operationId: TransactionsController_getTransactions
+      summary: ''
+      description: Get all entities from DB
+      parameters:
+        - name: page
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            type: number
+        - name: limit
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseSuccess'
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+      tags: *ref_1
+  /api/transactions/{id}:
+    delete:
+      operationId: TransactionsController_deleteTransactionById
+      summary: ''
+      description: Delete entity by id
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '404':
+          description: Entity not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+      tags: *ref_1
+  /api/categories:
+    post:
+      operationId: CategoriesController_createCategory
+      summary: ''
+      description: Create category for transactions
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCategoryDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseSuccess'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Category'
+        '201':
+          description: ''
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '409':
+          description: Conflict entity name, is already in DB
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+      tags: &ref_2
+        - categories
+    get:
+      operationId: CategoriesController_getCategories
+      summary: ''
+      description: Get all entities from DB
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseSuccess'
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Category'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+      tags: *ref_2
+  /api/categories/{id}:
+    get:
+      operationId: CategoriesController_getCategoryById
+      summary: ''
+      description: Get entity by id
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseSuccess'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Category'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '404':
+          description: Entity not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+      tags: *ref_2
+    patch:
+      operationId: CategoriesController_updateCategoryById
+      summary: ''
+      description: Update entity, property "name" is unique
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCategoryDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseSuccess'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Category'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '404':
+          description: Entity not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '409':
+          description: Conflict entity name, is already in DB
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+      tags: *ref_2
+    delete:
+      operationId: CategoriesController_deleteCategoryById
+      summary: ''
+      description: Delete entity, if it has no transactions
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '404':
+          description: Entity not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '409':
+          description: Conflict relation transactions, has transactions in DB
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+      tags: *ref_2
+  /api/reports:
+    get:
+      operationId: ReportsController_getReport
+      summary: ''
+      description: >-
+        Get statistic/report by searched categories with total amount of all
+        transaction from/to date
+      parameters:
+        - name: categoryIds
+          required: true
+          in: query
+          description: Category ids in array, UUId type
+          schema:
+            type: array
+        - name: fromPeriod
+          required: true
+          in: query
+          description: From period, date YYYY-MM-DD
+          schema:
+            format: date-time
+            type: string
+        - name: toPeriod
+          required: true
+          in: query
+          description: To period, date YYYY-MM-DD
+          schema:
+            format: date-time
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerReportRes'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwaggerApiError'
+      tags:
+        - reports
+  /health:
+    get:
+      operationId: AppController_root
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - healthcheck
+info:
+  title: Finance manager API
+  description: API recives bank transactions and shows stat
+  version: v1.0
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    ResponseSuccess:
+      type: object
+      properties:
+        status:
+          type: string
+        statusCode:
+          type: number
+        data:
+          type: object
+      required:
+        - status
+        - statusCode
+        - data
+    Bank:
+      type: object
+      properties:
+        id:
+          type: string
+          description: bank id, type UUId
+        name:
+          type: string
+        balance:
+          type: number
+          default: 0
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        transactions:
+          description: Transaction entities, OneToMany relation
+          deprecated: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+      required:
+        - id
+        - name
+        - balance
+        - createdAt
+        - updatedAt
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          description: category id, type UUId
+        name:
+          type: string
+          description: category name is unique
+        transactions:
+          description: Transaction entities, OneToMany relation
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - name
+        - transactions
+        - createdAt
+        - updatedAt
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        transactionId:
+          type: string
+        amount:
+          type: number
+        type:
+          enum:
+            - PROFITABLE
+            - CONSUMABLE
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        category:
+          type: array
+          items:
+            type: string
+        bank:
+          $ref: '#/components/schemas/Bank'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+      required:
+        - id
+        - transactionId
+        - amount
+        - type
+        - createdAt
+        - updatedAt
+        - category
+        - bank
+        - categories
+    CreateBankDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 64
+      required:
+        - name
+    SwaggerApiError:
+      type: object
+      properties:
+        domain:
+          type: string
+          description: domain/entity constants
+          enum:
+            - banks
+            - categories
+            - transactions
+            - reports
+            - generic
+        status:
+          type: string
+        statusCode:
+          type: number
+        error:
+          type: string
+        message:
+          type: object
+        id:
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+      required:
+        - domain
+        - status
+        - statusCode
+        - error
+        - message
+        - id
+        - timestamp
+    UpdateBankDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 64
+      required:
+        - name
+    CreateTransactionDto:
+      type: object
+      properties:
+        transactionId:
+          type: string
+        amount:
+          type: number
+        type:
+          enum:
+            - PROFITABLE
+            - CONSUMABLE
+          type: string
+        bankId:
+          type: string
+        category:
+          type: array
+          items:
+            type: string
+      required:
+        - transactionId
+        - amount
+        - type
+        - bankId
+        - category
+    CreateCategoryDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 20
+      required:
+        - name
+    UpdateCategoryDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 20
+      required:
+        - name
+    SwaggerReportRes:
+      type: object
+      properties:
+        status:
+          type: string
+        statusCode:
+          type: number
+        data:
+          type: object
+          example:
+            gas: 500
+            meel: 100
+            string: number
+      required:
+        - status
+        - statusCode
+        - data

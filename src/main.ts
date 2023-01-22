@@ -29,7 +29,7 @@ async function bootstrap() {
     }),
   );
 
-  SwaggerModule.setup('api-doc', app, document);
+  SwaggerModule.setup('api/doc', app, document);
 
   app.enableCors();
 

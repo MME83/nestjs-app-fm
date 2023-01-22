@@ -58,16 +58,16 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+## In Docker
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Stay in touch
+## API Documentation
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+# before run your app
 
-## License
+- local. Swagger API. Doc - [localhost:3000/api/doc](http://localhost:3000/api/doc)
+- local. Swagger JSON Doc - [localhost:3000/api/doc-json](http://localhost:3000/api/doc-jon)
+- local. Swagger YAML Doc - [localhost:3000/api/doc-yaml](http://localhost:3000/api/doc-yaml)
 
-Nest is [MIT licensed](LICENSE).
+- External Swagger Doc - [static github page](https://)
