@@ -64,7 +64,7 @@ $ npm run test:cov | $ docker-compose:test-cov
 
 - app available on the next [local link](http://localhost:3000/api/)
 - after tests, coverage available at the [link](http://127.0.0.1:5500/coverage/lcov-report/index.html) or in terminal
-- check web-hook (when sending request POST transaction to API) on the [next link](https://webhook.site/#!/8b0713df-5030-4a5c-a089-12839b77d3e0)
+- check web-hook (when sending POST transaction request to API) on the [next link](https://webhook.site/#!/8b0713df-5030-4a5c-a089-12839b77d3e0)
 - use [Postman](https://www.postman.com/) for testing CRUD operations or by local Swagger API-doc, see below the API Documentation
 
 ## API Documentation
