@@ -42,7 +42,7 @@ $ npm run start:prod | $ docker-compose:prod
 ## DB Initialization, migration
 
 ```bash
-# delevolpment, testing, production (in all cases you need run migration after docker-container DB is run)
+# delevolpment, testing, production (in all cases you need migration run after DB started in container)
 $ npm run migration:run
 ```
 
@@ -53,7 +53,7 @@ $ npm run migration:run
 $ npm run test | $ docker-compose:test
 
 # e2e tests (you need Docker DB container runing & run e2e test on the same environment)
-# run your test in container terminal or by docker command
+# run your test in container terminal or | by docker command
 $ npm run test:e2e | $ docker-compose:test-e2e
 
 # test coverage, available after run at the [link](http://127.0.0.1:5500/coverage/lcov-report/index.html)
