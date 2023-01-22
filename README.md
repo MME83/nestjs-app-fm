@@ -14,7 +14,10 @@
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript repository API Finance Manager.
-`Works around bank transactions, monitoring expenses by categories, send webhooks, etc`
+
+```bash
+# `Works around bank transactions, monitoring expenses by categories, send webhooks, etc`
+```
 
 ## Installation
 
