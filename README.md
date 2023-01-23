@@ -60,12 +60,22 @@ $ npm run test:e2e | $ docker-compose:test-e2e
 $ npm run test:cov | $ docker-compose:test-cov
 ```
 
-## API Extensions
+## API Extensions (while Docker containers running)
 
-- app available on the next [local link](http://localhost:3000/api/)
-- after tests, coverage available at the [link](http://127.0.0.1:5500/coverage/lcov-report/index.html) or in terminal
-- check web-hook (when sending POST transaction request to API) on the [next link](https://webhook.site/#!/8b0713df-5030-4a5c-a089-12839b77d3e0)
-- use [Postman](https://www.postman.com/) for testing CRUD operations or by local Swagger API-doc, see below the API Documentation
+- APP: available on the next [local link](http://localhost:3000/api/)
+- TEST Coverage:, after tests, coverage available at the [link](http://127.0.0.1:5500/coverage/lcov-report/index.html) or in terminal
+- WEBHOOK Testing: check web-hook (when sending POST transaction request to API) on the [next link](https://webhook.site/#!/8b0713df-5030-4a5c-a089-12839b77d3e0)
+- Use [Postman](https://www.postman.com/) for testing CRUD operations or by local Swagger API-doc, see below the API Documentation
+- PgAdmin4: administrative application interface for PostgreSQL, available on the [local link](http://localhost:8080)
+  ```bash
+  # config PgAdmin4
+  1. Open up PgAdmin 4, and use credential data from docker-compose.yml to login: email & pass
+  2. Create new server and add next config:
+     General section: name: `pgadmin`
+     Connection section: Host name/address: `db`, Port: `5432`, databasa: `postgres`, Username: `postgres`, Password: `postgres`
+     Push 'Save' button.
+  3. You've connected to DB. Done! GJ :)
+  ```
 
 ## API Documentation
 
